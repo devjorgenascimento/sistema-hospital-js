@@ -1,51 +1,59 @@
-import { Paciente } from "./models/Paciente.js"
-import { Prioridade } from "./enums/Prioridade.js"
+import { Paciente } from "./models/Paciente.js";
+import { Prioridade } from "./enums/Prioridade.js";
 
-const btn = document.getElementById("btnAdcionar");
-const pesoPrioridade : Record<Prioridade, number> = {
-    [Prioridade.VERMELHO]: 1,
-    [Prioridade.AMARELO]: 2,
-    [Prioridade.VERDE]: 3
+// ---------------- ESTADO ----------------
+const fila: Paciente[] = [];
+let pacienteEmAtendimento: Paciente | null = null;
+
+const pesoPrioridade: Record<Prioridade, number> = {
+  [Prioridade.VERMELHO]: 1,
+  [Prioridade.AMARELO]: 2,
+  [Prioridade.VERDE]: 3,
 };
 
-const fila: Paciente[] = [];
+// ---------------- ELEMENTOS ----------------
+const btn = document.getElementById("btnAdcionar");
+const btnChamar = document.getElementById("btnChamar");
 
-const paciente1 = new Paciente("João" , 45, Prioridade.VERMELHO);
-
-console.log(paciente1);
-
-paciente1.iniciarAtendimento();
-console.log("Em atendimento: ", paciente1.emAtendimento);
-
+// ---------------- EVENTOS ----------------
 btn?.addEventListener("click", () => {
-    const nomeInput = document.getElementById("nome") as HTMLInputElement;
-    const idadeInput = document.getElementById("idade") as  HTMLInputElement;
-    const prioridadeSelect = document.getElementById("prioridade") as HTMLInputElement;
+  const nomeInput = document.getElementById("nome") as HTMLInputElement;
+  const idadeInput = document.getElementById("idade") as HTMLInputElement;
+  const prioridadeSelect = document.getElementById("prioridade") as HTMLSelectElement;
 
-    const nome = nomeInput.value;
-    const idade = Number(idadeInput.value);
-    const prioridade = prioridadeSelect.value as Prioridade;
+  const nome = nomeInput.value;
+  const idade = Number(idadeInput.value);
+  const prioridade = prioridadeSelect.value as Prioridade;
 
-    if(!nome || !idade) return;
+  if (!nome || !idade) return;
 
-    adcionarPaciente(new Paciente(nome, idade, prioridade ));
+  adicionarPaciente(new Paciente(nome, idade, prioridade));
 
-    nomeInput.value = "";
-    idadeInput.value = "";
-})
+  nomeInput.value = "";
+  idadeInput.value = "";
+});
 
-function adcionarPaciente(paciente: Paciente): void {
-    fila.push(paciente);
-    fila.sort((a,b) => {
-        return pesoPrioridade[a.prioridade] - pesoPrioridade[b.prioridade]
-    });
+btnChamar?.addEventListener("click", chamarProximo);
 
-    renderizarFila()
+// ---------------- FUNÇÕES ----------------
+function adicionarPaciente(paciente: Paciente): void {
+  fila.push(paciente);
+  fila.sort((a, b) => pesoPrioridade[a.prioridade] - pesoPrioridade[b.prioridade]);
+  renderizarFila();
+}
+
+function chamarProximo(): void {
+  if (pacienteEmAtendimento || fila.length === 0) return;
+
+  pacienteEmAtendimento = fila.shift()!;
+  pacienteEmAtendimento.iniciarAtendimento();
+
+  renderizarFila();
+  renderizarAtendimento();
 }
 
 function renderizarFila(): void {
   const lista = document.getElementById("lista-pacientes");
-
   if (!lista) return;
 
   lista.innerHTML = "";
@@ -58,6 +66,20 @@ function renderizarFila(): void {
   });
 }
 
-//adcionarPaciente(new Paciente("João", 20, Prioridade.VERDE));
-//adcionarPaciente(new Paciente("Maria", 30, Prioridade.AMARELO));
-//adcionarPaciente(new Paciente("José", 60, Prioridade.VERMELHO));
+function renderizarAtendimento(): void {
+  const area = document.getElementById("atendimento");
+  if (!area) return;
+
+  area.innerHTML = "";
+
+  if (!pacienteEmAtendimento) {
+    area.textContent = "Nenhum paciente em atendimento";
+    return;
+  }
+
+  const p = document.createElement("p");
+  p.textContent = `${pacienteEmAtendimento.nome} - ${pacienteEmAtendimento.prioridade}`;
+  p.classList.add(pacienteEmAtendimento.prioridade);
+
+  area.appendChild(p);
+}
