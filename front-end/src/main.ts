@@ -107,7 +107,7 @@ function renderizarHistorico(): void {
 
     historico.forEach((paciente) => {
         const li = document.createElement("li");
-        li.textContent = `${paciente.nome} - ${paciente.prioridade}`
+        li.textContent = `${paciente.nome} - ${paciente.prioridade} - ${paciente.idade} Anos`
         li.classList.add(paciente.prioridade);
         lista.appendChild(li);
     });
