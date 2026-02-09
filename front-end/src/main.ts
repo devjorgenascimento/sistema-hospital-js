@@ -2,6 +2,7 @@ import { Paciente } from "./models/Paciente.js";
 import { Prioridade } from "./enums/Prioridade.js";
 
 // ---------------- ESTADO ----------------
+const historico: Paciente[] = [];
 const fila: Paciente[] = [];
 let pacienteEmAtendimento: Paciente | null = null;
 
@@ -14,6 +15,8 @@ const pesoPrioridade: Record<Prioridade, number> = {
 // ---------------- ELEMENTOS ----------------
 const btn = document.getElementById("btnAdcionar");
 const btnChamar = document.getElementById("btnChamar");
+const btnFinalizar = document.getElementById("btnFinalizar");
+
 
 // ---------------- EVENTOS ----------------
 btn?.addEventListener("click", () => {
@@ -34,7 +37,7 @@ btn?.addEventListener("click", () => {
 });
 
 btnChamar?.addEventListener("click", chamarProximo);
-
+btnFinalizar?.addEventListener("click", finalizarAtendimento);
 // ---------------- FUNÇÕES ----------------
 function adicionarPaciente(paciente: Paciente): void {
   fila.push(paciente);
@@ -83,3 +86,30 @@ function renderizarAtendimento(): void {
 
   area.appendChild(p);
 }
+
+function finalizarAtendimento(): void {
+    if(!pacienteEmAtendimento) return;
+
+    pacienteEmAtendimento.finalizarAtendimento();
+    historico.push(pacienteEmAtendimento);
+
+    pacienteEmAtendimento = null;
+
+    renderizarAtendimento();
+    renderizarHistorico();
+}
+
+function renderizarHistorico(): void {
+    const lista = document.getElementById("historico");
+    if (!lista) return;
+
+    lista.innerHTML = ""
+
+    historico.forEach((paciente) => {
+        const li = document.createElement("li");
+        li.textContent = `${paciente.nome} - ${paciente.prioridade}`
+        li.classList.add(paciente.prioridade);
+        lista.appendChild(li);
+    });
+}
+
