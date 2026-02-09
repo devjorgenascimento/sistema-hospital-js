@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "target": "ES6",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "rootDir": "./front-end/src",
+    "outDir": "./front-end/dist",
+    "strict": true
+  },
+  "include": ["front-end/src/**/*"]
+}
