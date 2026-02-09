@@ -12,7 +12,18 @@
   <div id="pacientes">
     <h2>Fila de espera</h2>
     <ul id="lista-pacientes"></ul>
+    <h2>Novo Paciente</h2>
 
+    <input type="text" id="nome" placeholder="Nome" />
+    <input type="number" id="idade" placeholder="Idade" />
+
+    <select id="prioridade">
+        <option value="verde">Verde</option>
+        <option value="amarelo">Amarelo</option>
+        <option value="vermelho">Vermelho</option>
+    </select>
+
+    <button id="btnAdcionar">Adcionar</button>
   </div>
 
   <script type="module" src="dist/main.js"></script>

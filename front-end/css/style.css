@@ -1,0 +1,20 @@
+li {
+  padding: 8px;
+  margin-bottom: 6px;
+  border-radius: 6px;
+  color: #fff;
+  font-weight: bold;
+}
+
+.vermelho {
+  background-color: #e53935;
+}
+
+.amarelo {
+  background-color: #fbc02d;
+  color: #000;
+}
+
+.verde {
+  background-color: #43a047;
+}
