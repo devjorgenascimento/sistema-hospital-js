@@ -35,5 +35,19 @@ export class Paciente {
     const diff = fim.getTime() - inicio.getTime();
     return Math.floor( diff / 1000);    
   }
+
+  get tempoFormatado(): string {
+    const tempo = this.tempoAtendimento;
+    if(tempo === null) return "--:--";
+
+    const minutos = Math.floor(tempo / 60);
+    const segundos = tempo % 60;
+
+    const mm = String(minutos).padStart(2, "0");
+    const ss = String(segundos).padStart(2, "0")
+
+    return `${mm}:${ss}`
+
+  }
 }
 
