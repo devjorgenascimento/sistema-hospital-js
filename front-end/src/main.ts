@@ -1,10 +1,11 @@
 import { Paciente } from "./models/Paciente.js";
 import { Prioridade } from "./enums/Prioridade.js";
+import { AtendimentoService } from "./services/AtendimentoService.js";
 
 // ---------------- ESTADO ----------------
 const historico: Paciente[] = [];
-const fila: Paciente[] = [];
 let pacienteEmAtendimento: Paciente | null = null;
+const atendimento = new AtendimentoService();
 
 const pesoPrioridade: Record<Prioridade, number> = {
   [Prioridade.VERMELHO]: 1,
@@ -17,20 +18,22 @@ const btn = document.getElementById("btnAdcionar");
 const btnChamar = document.getElementById("btnChamar");
 const btnFinalizar = document.getElementById("btnFinalizar");
 
-
 // ---------------- EVENTOS ----------------
 btn?.addEventListener("click", () => {
   const nomeInput = document.getElementById("nome") as HTMLInputElement;
   const idadeInput = document.getElementById("idade") as HTMLInputElement;
   const prioridadeSelect = document.getElementById("prioridade") as HTMLSelectElement;
 
-  const nome = nomeInput.value;
+  const nome = nomeInput.value.trim();
   const idade = Number(idadeInput.value);
   const prioridade = prioridadeSelect.value as Prioridade;
 
   if (!nome || !idade) return;
 
-  adicionarPaciente(new Paciente(nome, idade, prioridade));
+  const novoPaciente = new Paciente(nome, idade, prioridade);
+  atendimento.adicionarPaciente(novoPaciente);
+
+  renderizarFila();
 
   nomeInput.value = "";
   idadeInput.value = "";
@@ -38,35 +41,36 @@ btn?.addEventListener("click", () => {
 
 btnChamar?.addEventListener("click", chamarProximo);
 btnFinalizar?.addEventListener("click", finalizarAtendimento);
+
 // ---------------- FUNÇÕES ----------------
-function adicionarPaciente(paciente: Paciente): void {
-  fila.push(paciente);
-  fila.sort((a, b) => pesoPrioridade[a.prioridade] - pesoPrioridade[b.prioridade]);
-  renderizarFila();
-}
-
-function chamarProximo(): void {
-  if (pacienteEmAtendimento || fila.length === 0) return;
-
-  pacienteEmAtendimento = fila.shift()!;
-  pacienteEmAtendimento.iniciarAtendimento();
-
-  renderizarFila();
-  renderizarAtendimento();
-}
-
 function renderizarFila(): void {
   const lista = document.getElementById("lista-pacientes");
   if (!lista) return;
 
   lista.innerHTML = "";
 
-  fila.forEach((paciente) => {
-    const li = document.createElement("li");
-    li.textContent = `${paciente.nome} - ${paciente.prioridade}`;
-    li.classList.add(paciente.prioridade);
-    lista.appendChild(li);
-  });
+  const fila = atendimento.getFila();
+
+  fila
+    .sort((a, b) => pesoPrioridade[a.prioridade] - pesoPrioridade[b.prioridade])
+    .forEach((paciente) => {
+      const li = document.createElement("li");
+      li.textContent = `${paciente.nome} - ${paciente.prioridade}`;
+      li.classList.add(paciente.prioridade);
+      lista.appendChild(li);
+    });
+}
+
+function chamarProximo(): void {
+  if (pacienteEmAtendimento) return;
+
+  pacienteEmAtendimento = atendimento.chamarProximo();
+  if (!pacienteEmAtendimento) return;
+
+  pacienteEmAtendimento.iniciarAtendimento();
+
+  renderizarFila();
+  renderizarAtendimento();
 }
 
 function renderizarAtendimento(): void {
@@ -88,28 +92,27 @@ function renderizarAtendimento(): void {
 }
 
 function finalizarAtendimento(): void {
-    if(!pacienteEmAtendimento) return;
+  if (!pacienteEmAtendimento) return;
 
-    pacienteEmAtendimento.finalizarAtendimento();
-    historico.push(pacienteEmAtendimento);
+  pacienteEmAtendimento.finalizarAtendimento();
+  historico.push(pacienteEmAtendimento);
 
-    pacienteEmAtendimento = null;
+  pacienteEmAtendimento = null;
 
-    renderizarAtendimento();
-    renderizarHistorico();
+  renderizarAtendimento();
+  renderizarHistorico();
 }
 
 function renderizarHistorico(): void {
-    const lista = document.getElementById("historico");
-    if (!lista) return;
+  const lista = document.getElementById("historico");
+  if (!lista) return;
 
-    lista.innerHTML = ""
+  lista.innerHTML = "";
 
-    historico.forEach((paciente) => {
-        const li = document.createElement("li");
-        li.textContent = `${paciente.nome} - ${paciente.idade} anos - ${paciente.prioridade} - ${paciente.tempoFormatado}s`;
-        li.classList.add(paciente.prioridade);
-        lista.appendChild(li);
-    });
+  historico.forEach((paciente) => {
+    const li = document.createElement("li");
+    li.textContent = `${paciente.nome} - ${paciente.idade} anos - ${paciente.prioridade} - ${paciente.tempoFormatado}s`;
+    li.classList.add(paciente.prioridade);
+    lista.appendChild(li);
+  });
 }
-
