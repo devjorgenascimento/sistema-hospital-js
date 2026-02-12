@@ -2,17 +2,47 @@ import { Prioridade } from "../enums/Prioridade.js";
 
 export class Paciente {
   public nome: string;
-  public idade: number;
+  public dataNascimento: Date;
+  public cpf: string;
+  public endereco: string;
+  public telefone: string;
+  public cartao: string;
   public prioridade: Prioridade;
+
   public emAtendimento: boolean;
   public inicioAtendimento: Date | null = null;
   public fimAtendimento: Date | null = null;
 
-  constructor(nome: string, idade: number, prioridade: Prioridade) {
+  constructor(
+    nome: string,
+    dataNascimento: Date,
+    cpf: string,
+    endereco: string,
+    telefone: string,
+    cartao: string,
+    prioridade: Prioridade
+  ) {
     this.nome = nome;
-    this.idade = idade;
+    this.dataNascimento = dataNascimento;
+    this.cpf = cpf;
+    this.endereco = endereco;
+    this.telefone = telefone;
+    this.cartao = cartao;
     this.prioridade = prioridade;
     this.emAtendimento = false;
+  }
+
+  // 🧠 Idade calculada automaticamente
+  get idade(): number {
+    const hoje = new Date();
+    let idade = hoje.getFullYear() - this.dataNascimento.getFullYear();
+    const mes = hoje.getMonth() - this.dataNascimento.getMonth();
+
+    if (mes < 0 || (mes === 0 && hoje.getDate() < this.dataNascimento.getDate())) {
+      idade--;
+    }
+
+    return idade;
   }
 
   iniciarAtendimento(): void {
@@ -26,28 +56,17 @@ export class Paciente {
   }
 
   get tempoAtendimento(): number | null {
-   
-    const inicio = this.inicioAtendimento;
-    const fim = this.fimAtendimento;
-
-    if (!inicio || !fim) return null;
-
-    const diff = fim.getTime() - inicio.getTime();
-    return Math.floor( diff / 1000);    
+    if (!this.inicioAtendimento || !this.fimAtendimento) return null;
+    return Math.floor((this.fimAtendimento.getTime() - this.inicioAtendimento.getTime()) / 1000);
   }
 
   get tempoFormatado(): string {
     const tempo = this.tempoAtendimento;
-    if(tempo === null) return "--:--";
+    if (tempo === null) return "--:--";
 
     const minutos = Math.floor(tempo / 60);
     const segundos = tempo % 60;
 
-    const mm = String(minutos).padStart(2, "0");
-    const ss = String(segundos).padStart(2, "0")
-
-    return `${mm}:${ss}`
-
+    return `${String(minutos).padStart(2, "0")}:${String(segundos).padStart(2, "0")}`;
   }
 }
-

@@ -3,39 +3,94 @@
 <head>
   <meta charset="UTF-8">
   <title>Hospital - Simulador</title>
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/login.css">
+  <link rel="stylesheet" href="css/recepcao.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
+<div id="tela-login" class="tela">
+  <div class="login-wrapper">
+    <div class="login-card">
 
-  <h1>Sistema Hospitalar</h1>
-
-  <div id="pacientes">
-    <h2>Fila de espera</h2>
-    <ul id="lista-pacientes"></ul>
-
-    <h2>Em Atendimento</h2>
-    <div id="atendimento">
-        <p>Nenhum paciente em atendimento</p>
+    <div class="logo-area">
+      <i class="fa-solid fa-hospital"></i>
+      <h1>Hospital Corporate</h1>
+      <p>Sistema Interno de Gestão</p>
     </div>
-    <button id="btnChamar">Chamar proximo</button>
-    <button id="btnFinalizar">Finalizar Atendimento</button>
-    <h2>Novo Paciente</h2>
 
-    <input type="text" id="nome" placeholder="Nome" />
-    <input type="number" id="idade" placeholder="Idade" />
+    <div class="input-group">
+      <i class="fa-solid fa-user"></i>
+      <input id="usuario" placeholder="Usuário">
+    </div>
 
-    <select id="prioridade">
-        <option value="verde">Verde</option>
-        <option value="amarelo">Amarelo</option>
-        <option value="vermelho">Vermelho</option>
-    </select>
+    <div class="input-group">
+      <i class="fa-solid fa-lock"></i>
+      <input type="password" id="senha" placeholder="Senha">
+    </div>
 
-    <button id="btnAdcionar">Adcionar</button>
+    <button id="btnLogin">Acessar Sistema</button>
+
+    <p id="menssagemErro" class="erro hidden">
+        Usuário ou senha inválidos.
+    </p>
+
   </div>
+</div>
+</div>
 
-  <div>
-    <p>Historico: </p>
-    <p id="historico"></p>
+   <div id="tela-recepcao" class="tela hidden">
+    <h2>Cadastro de Paciente</h2>
+
+    <form id="formPaciente" class="form-recepcao">
+      <div class="campo">
+        <label>Nome Completo</label>
+        <input type="text" id="nome" required />
+      </div>
+
+      <div class="campo">
+        <label>Data de Nascimento</label>
+        <input type="date" id="dataNascimento" required/>
+      </div>
+
+      <div class="campo">
+        <label>CPF</label>
+        <input type="text" id="cpf" maxlength="14" placeholder="000.000.000.00" required/>
+      </div>
+
+      <div class="campo">
+        <label>Número do cartão</label>
+        <input type="text" id="cartao" required/>
+      </div>
+
+      <div class="campo">
+        <label>Prioridade</label>
+        <select id="prioridade">
+          <option value="VERDE">Leve</option>
+          <option value="AMARELO">Moderada</option>
+          <option value="VERMELHO">Grave</option>
+        </select>
+      </div>
+
+      <button type="submit" id="btnAdicionar">Cadastrar Paciente</button>
+   </form>
+   <h3>Fila de Atendimento</h3>
+
+<div class="fila-container">
+  <ul id="lista-pacientes"></ul>
+</div>
+
+   <button id="irMedico">Ir para Médico</button>
+    <button id="irMetricas">Ver Métricas</button>
+
+   <div id="tela-medico" class="tela hidden">
+    <h2>Sala do Médico</h2>
+   </div>
+
+   <div id="tela-metricas" class="tela hidden">
+      <h2>Métricas</h2>  
   </div>
 
   <script type="module" src="dist/main.js"></script>

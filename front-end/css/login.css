@@ -1,0 +1,99 @@
+.login-wrapper {
+  width: 100%;
+  max-width: 420px;
+  padding: 20px;
+}
+
+.login-card {
+  background: #ffffff;
+  padding: 45px 35px;
+  border-radius: 14px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
+  animation: fadeIn 0.6s ease;
+}
+
+.logo-area {
+  text-align: center;
+  margin-bottom: 35px;
+}
+
+.logo-area i {
+  font-size: 40px;
+  color: #2c5364;
+  margin-bottom: 10px;
+}
+
+.logo-area h1 {
+  font-size: 22px;
+  color: #1f2d3a;
+  margin-bottom: 5px;
+}
+
+.logo-area p {
+  font-size: 13px;
+  color: #6c7a89;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  background: #f4f7fa;
+  border: 1px solid #dce3ea;
+  border-radius: 8px;
+  padding: 0 12px;
+  margin-bottom: 18px;
+  transition: 0.2s ease;
+}
+
+.input-group i {
+  color: #2c5364;
+  font-size: 14px;
+  margin-right: 8px;
+}
+
+.input-group input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 14px 0;
+  font-size: 14px;
+}
+
+.input-group input:focus {
+  outline: none;
+}
+
+.input-group:focus-within {
+  border-color: #2c5364;
+  box-shadow: 0 0 8px rgba(44, 83, 100, 0.25);
+}
+
+#btnLogin {
+  width: 100%;
+  padding: 14px;
+  background: #2c5364;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+#btnLogin:hover {
+  background: #203a43;
+  transform: translateY(-2px);
+}
+
+.erro {
+  margin-top: 15px;
+  padding: 12px;
+  border-radius: 8px;
+  background: #ffecec;
+  border: 1px solid #ffb3b3;
+  color: #b30000;
+  font-size: 13px;
+  text-align: center;
+  animation: slideFade 0.3s ease;
+}

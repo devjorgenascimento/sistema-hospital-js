@@ -14,30 +14,46 @@ const pesoPrioridade: Record<Prioridade, number> = {
 };
 
 // ---------------- ELEMENTOS ----------------
-const btn = document.getElementById("btnAdcionar");
 const btnChamar = document.getElementById("btnChamar");
 const btnFinalizar = document.getElementById("btnFinalizar");
+document.getElementById("irMedico")
+  ?.addEventListener("click", () => mostrarTela("medico"));
+
+document.getElementById("irMetricas")
+  ?.addEventListener("click", () => mostrarTela("metricas"));
+
 
 // ---------------- EVENTOS ----------------
-btn?.addEventListener("click", () => {
-  const nomeInput = document.getElementById("nome") as HTMLInputElement;
-  const idadeInput = document.getElementById("idade") as HTMLInputElement;
-  const prioridadeSelect = document.getElementById("prioridade") as HTMLSelectElement;
+const form = document.getElementById("formPaciente") as HTMLFormElement | null;
 
-  const nome = nomeInput.value.trim();
-  const idade = Number(idadeInput.value);
-  const prioridade = prioridadeSelect.value as Prioridade;
+form?.addEventListener("submit", (e) => {
+  e.preventDefault();
 
-  if (!nome || !idade) return;
+  const nome = (document.getElementById("nome") as HTMLInputElement).value;
+  const dataNascimento = (document.getElementById("dataNascimento") as HTMLInputElement).value;
+  const cpf = (document.getElementById("cpf") as HTMLInputElement).value;
+  const endereco = (document.getElementById("endereco") as HTMLInputElement).value;
+  const telefone = (document.getElementById("telefone") as HTMLInputElement).value;
+  const cartao = (document.getElementById("cartao") as HTMLInputElement).value;
+  const prioridade = (document.getElementById("prioridade") as HTMLSelectElement).value as Prioridade;
 
-  const novoPaciente = new Paciente(nome, idade, prioridade);
+  if (!nome || !cpf) return;
+
+  const novoPaciente = new Paciente(
+    nome,
+    new Date(dataNascimento),
+    cpf,
+    endereco,
+    telefone,
+    cartao,
+    prioridade
+  );
   atendimento.adicionarPaciente(novoPaciente);
 
   renderizarFila();
-
-  nomeInput.value = "";
-  idadeInput.value = "";
+  form.reset();
 });
+
 
 btnChamar?.addEventListener("click", chamarProximo);
 btnFinalizar?.addEventListener("click", finalizarAtendimento);
@@ -116,3 +132,34 @@ function renderizarHistorico(): void {
     lista.appendChild(li);
   });
 }
+
+type Tela = "login" | "recepcao" | "medico" | "metricas";
+
+function mostrarTela(tela: Tela): void {
+  const telas = document.querySelectorAll<HTMLElement>(".tela");
+
+  telas.forEach((t) => {
+    t.classList.add("hidden");
+  });
+  
+  const telaAtiva = document.getElementById(`tela-${tela}`);
+  telaAtiva?.classList.remove("hidden")
+};
+    const btnLogin = document.getElementById("btnLogin");
+    const mensagemErro = document.getElementById("mensagemErro");
+
+    btnLogin?.addEventListener("click", () => {
+      const usuario = (document.getElementById("usuario") as HTMLInputElement).value;
+      const senha = (document.getElementById("senha") as HTMLInputElement).value;
+
+      if (usuario === "admin" && senha === "123") {
+          mensagemErro?.classList.add("hidden");
+          mostrarTela("recepcao"); // <- agora entra no sistema
+      } else {
+        mensagemErro?.classList.remove("hidden");
+      }
+});
+
+ document.addEventListener("DOMContentLoaded", () => {
+  mostrarTela("login");
+});

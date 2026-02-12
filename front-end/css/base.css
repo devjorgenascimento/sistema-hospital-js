@@ -1,0 +1,24 @@
+:root {
+    --azul-primario: #2c5364;
+    --azul-escuro: #203a43;
+    --cinza-claro: #f4f7fa;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+body {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+}
+
+.hidden {
+  display: none;
+}

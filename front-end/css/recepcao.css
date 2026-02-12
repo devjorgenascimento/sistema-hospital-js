@@ -1,0 +1,72 @@
+.form-recepcao {
+  display: grid;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+}
+
+.campo label {
+  font-size: 13px;
+  margin-bottom: 5px;
+  color: #a6c1cc;
+  font-weight: 600;
+}
+
+.campo input,
+.campo select {
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #dcdcdc;
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+.campo input:focus,
+.campo select:focus {
+  outline: none;
+  border-color: #468aa7;
+  box-shadow: 0 0 6px rgba(44, 83, 100, 0.3);
+}
+
+#btnAdicionar {
+  margin-top: 10px;
+  padding: 12px;
+  background: #2c5364;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+#btnAdicionar:hover {
+  background: #203a43;
+}
+
+.fila-container {
+  margin-top: 25px;
+  padding: 15px;
+  background: #f4f7fa;
+  border-radius: 10px;
+  border: 1px solid #dce3ea;
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+#lista-pacientes {
+  list-style: none;
+  padding: 0;
+}
+
+#lista-pacientes li {
+  padding: 10px;
+  margin-bottom: 8px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+}
