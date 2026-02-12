@@ -136,7 +136,13 @@ function renderizarHistorico(): void {
 type Tela = "login" | "recepcao" | "medico" | "metricas";
 
 function mostrarTela(tela: Tela): void {
-  const telas = document.querySelectorAll<HTMLElement>(".tela");
+  
+  if (tela !== "login") {
+    document.getElementById("tela-login")?.classList.add("hidden");
+    document.getElementById("sistema")?.classList.remove("hidden");
+  }
+
+  const telas = document.querySelectorAll<HTMLElement>("#sitema .tela");
 
   telas.forEach((t) => {
     t.classList.add("hidden");
@@ -145,18 +151,22 @@ function mostrarTela(tela: Tela): void {
   const telaAtiva = document.getElementById(`tela-${tela}`);
   telaAtiva?.classList.remove("hidden")
 };
+
     const btnLogin = document.getElementById("btnLogin");
-    const mensagemErro = document.getElementById("mensagemErro");
+    const menssagemErro = document.getElementById("menssagemErro");
 
     btnLogin?.addEventListener("click", () => {
       const usuario = (document.getElementById("usuario") as HTMLInputElement).value;
       const senha = (document.getElementById("senha") as HTMLInputElement).value;
 
       if (usuario === "admin" && senha === "123") {
-          mensagemErro?.classList.add("hidden");
-          mostrarTela("recepcao"); // <- agora entra no sistema
+          menssagemErro?.classList.add("hidden");
+          document.getElementById("tela-login")?.classList.add("hidden");
+          document.getElementById("sistema")?.classList.remove("hidden");
+          mostrarTela("recepcao");
+
       } else {
-        mensagemErro?.classList.remove("hidden");
+        menssagemErro?.classList.remove("hidden");
       }
 });
 
